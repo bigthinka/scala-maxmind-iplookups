@@ -13,9 +13,6 @@
 import sbt._
 import Keys._
 
-// Bintray plugin
-import bintray.BintrayPlugin._
-import bintray.BintrayKeys._
 
 object BuildSettings {
 
@@ -39,17 +36,16 @@ object BuildSettings {
     "-target", "1.8"
   )
 
-  lazy val publishSettings = bintraySettings ++ Seq(
+  lazy val publishSettings = Seq(
     publishMavenStyle := true,
     publishArtifact := true,
     publishArtifact in Test := false,
+    publishTo := Some("Neodata Maven" at "https://maven.neodatagroup.com/repository/internal"),
     licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0.html")),
-    bintrayOrganization := Some("snowplow"),
-    bintrayRepository := "snowplow-maven",
     pomIncludeRepository := { _ => false },
     homepage := Some(url("http://snowplowanalytics.com")),
-    scmInfo := Some(ScmInfo(url("https://github.com/snowplow/scala-maxmind-iplookups"),
-      "scm:git@github.com:snowplow/scala-maxmind-iplookups.git")),
+    scmInfo := Some(ScmInfo(url("https://github.com/bigthinka/scala-maxmind-iplookups"),
+      "scm:git@github.com:bigthinka/scala-maxmind-iplookups")),
     pomExtra := (
       <developers>
         <developer>

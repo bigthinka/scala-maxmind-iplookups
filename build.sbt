@@ -13,9 +13,9 @@
 
 lazy val root = project.in(file("."))
   .settings(
-    organization       :=  "com.snowplowanalytics",
+    organization       :=  "com.neodatagroup",
     name               :=  "scala-maxmind-iplookups",
-    version            :=  "0.4.0",
+    version            :=  "0.4.4",
     description        :=  "Scala wrapper for MaxMind GeoIP2 library",
     scalaVersion       :=  "2.11.12",
     crossScalaVersions :=  Seq("2.11.12", "2.12.5"),
@@ -24,6 +24,7 @@ lazy val root = project.in(file("."))
   )
   .settings(BuildSettings.publishSettings)
   .settings(
+    credentials += Credentials("Repository Archiva Managed internal Repository", "maven.neodatagroup.com", "mark", "5ManyChars"),
     libraryDependencies ++= Seq(
       Dependencies.maxmind,
       Dependencies.collUtils,

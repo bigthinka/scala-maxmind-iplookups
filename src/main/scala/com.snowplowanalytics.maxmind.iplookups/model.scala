@@ -13,22 +13,27 @@
 package com.snowplowanalytics.maxmind.iplookups
 
 import com.maxmind.geoip2.model.CityResponse
+import com.maxmind.geoip2.record.Subdivision
 import scalaz._
 
 object model {
 
   /** A case class wrapper around the MaxMind CityResponse class. */
   final case class IpLocation(
-    countryCode: String,
-    countryName: String,
-    region: Option[String],
-    city: Option[String],
-    latitude: Float,
-    longitude: Float,
-    timezone: Option[String],
-    postalCode: Option[String],
-    metroCode: Option[Int],
-    regionName: Option[String]
+                               countryCode: String,
+                               countryName: String,
+                               region: Option[String],
+                               city: Option[String],
+                               latitude: Float,
+                               longitude: Float,
+                               timezone: Option[String],
+                               postalCode: Option[String],
+                               metroCode: Option[Int],
+                               regionName: Option[String],
+                               subdivisions: Option[java.util.List[Subdivision]],
+                               geoNameId:  Int,
+                               isInEuropeanUnion: Boolean,
+                               continentCode: String
   )
 
   /** Companion class contains a constructor which takes a MaxMind CityResponse. */
@@ -49,7 +54,12 @@ object model {
         timezone = Option(cityResponse.getLocation.getTimeZone),
         postalCode = Option(cityResponse.getPostal.getCode),
         metroCode = Option(cityResponse.getLocation.getMetroCode).map(_.toInt),
-        regionName = Option(cityResponse.getMostSpecificSubdivision.getName)
+        regionName = Option(cityResponse.getMostSpecificSubdivision.getName),
+        subdivisions = Option(cityResponse.getSubdivisions()),
+        geoNameId = Option(cityResponse.getCity.getGeoNameId).map(_.toInt).getOrElse(0),
+        isInEuropeanUnion = cityResponse.getCountry.isInEuropeanUnion,
+        continentCode = cityResponse.getContinent.getCode
+
       )
   }
 
